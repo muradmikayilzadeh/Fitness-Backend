@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AssignmentResource;
 use App\Http\Resources\ClassroomResource;
+use App\Models\Assignments;
 use App\Models\Classroom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use function Illuminate\Events\queueable;
 
 class TrainerController extends Controller
 {
+
+    //Classroom methods
+
     public function getAllClasses()
     {
         return ClassroomResource::collection(Classroom::where("trainer_id",auth()->user()->id)->get());
@@ -33,5 +39,25 @@ class TrainerController extends Controller
         }else{
             return response()->json(['error' => 'Permission denied'], 403);
         }
+    }
+
+
+    // Assignment methods
+    public function addWorkout(Request $request)
+    {
+        $new_workout = DB::table("assignment_workouts")->insert([
+            'assignment_id' => $request->assignment_id,
+            'workout_id' => $request->workout_id,
+            'repeats' => $request->repeats
+        ]);
+
+        return response()->json(['message' => 'Workout added successfully'], 200);
+    }
+
+    public function removeWorkout(Request $request)
+    {
+        $workout = DB::table("assignment_workouts")->where([["assignment_id",$request->assignment_id],["workout_id",$request->workout_id]]);
+        $workout->delete();
+        return response()->json(['message' => 'Workout removed successfully'], 200);
     }
 }

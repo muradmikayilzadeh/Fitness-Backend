@@ -44,9 +44,9 @@ class ClassroomController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($assignment_id)
     {
-        $classroom = Classroom::findOrFail($id);
+        $classroom = Classroom::findOrFail($assignment_id);
         return new ClassroomResource($classroom);
     }
 

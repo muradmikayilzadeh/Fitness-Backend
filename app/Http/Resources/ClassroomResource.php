@@ -27,6 +27,11 @@ class ClassroomResource extends JsonResource
 
         if(isset(auth()->user()->id) && $this->trainer_id == auth()->user()->id){
             $response['students'] = $this->students;
+            $response['assignments'] = $this->assignments;
+        }
+
+        if(isset(auth()->user()->id) && $this->students()->where("student_id",auth()->user()->id)->exists() == 1){
+            $response['assignments'] = $this->assignments;
         }
 
         return $response;
