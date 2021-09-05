@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Assignments extends Model
 {
     use HasFactory;
+
+    public function classroom()
+    {
+        return $this->belongsTo(Classroom::class);
+    }
 }

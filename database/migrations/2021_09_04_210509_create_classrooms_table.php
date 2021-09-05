@@ -19,6 +19,8 @@ class CreateClassroomsTable extends Migration
             $table->text("description");
             $table->string("class_code",6);
             $table->string("cover_photo");
+            $table->unsignedBigInteger("trainer_id");
+            $table->foreign('trainer_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
